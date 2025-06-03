@@ -1,0 +1,200 @@
+package com.yorth21;
+
+import java_cup.runtime.*;
+
+/* Código del parser */
+parser code {:
+    public StringBuilder errSyntax = new StringBuilder();
+
+    @Override
+    public void syntax_error(Symbol s) {
+        if (s instanceof ComplexSymbolFactory.ComplexSymbol) {
+            ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol) s;
+            errSyntax.append("Error de sintaxis en línea ")
+                .append(cs.getLeft().getLine())
+                .append(", columna ")
+                .append(cs.getLeft().getColumn())
+                .append(": símbolo inesperado '")
+                .append(cs.value)
+                .append("'\n");
+        } else {
+            errSyntax.append("Error de sintaxis (símbolo genérico): tipo ")
+                .append(s.sym)
+                .append(", valor ")
+                .append(s.value)
+                .append("\n");
+        }
+
+        throw new UnsupportedOperationException (errSyntax.toString());
+    }
+:};
+
+/* Definición de terminales */
+
+// Palabras clave de estructura de programa
+terminal PROGRAM, ENDPROGRAM;
+
+// Tipos de datos
+terminal INTEGER_TYPE, REAL_TYPE, STRING_TYPE, BOOLEAN_TYPE, CHARACTER_TYPE;
+
+// Entrada y salida
+terminal READ, INPUT, WRITE, PRINT, OUTPUT;
+
+// Estructuras de control - Condicionales
+terminal IF, THEN, ELSE, ENDIF;
+
+// Estructuras de control - Ciclos
+terminal WHILE, DO, ENDWHILE, FOR, TO, STEP, ENDFOR;
+
+// Selección múltiple
+terminal SWITCH, CASE, DEFAULT, OTHERWISE, ENDSWITCH;
+
+// Funciones
+terminal FUNCTION, ENDFUNCTION, RETURN;
+
+// Operadores lógicos
+terminal AND, OR, NOT;
+
+// Literales booleanos
+terminal TRUE, FALSE;
+
+// Operadores relacionales
+terminal EQUAL, NOT_EQUAL, LESS_EQUAL, GREATER_EQUAL, LESS, GREATER;
+
+// Operadores aritméticos
+terminal PLUS, MINUS, MULTIPLY, DIVIDE, MODULO, POWER;
+
+// Asignación
+terminal ASSIGN;
+
+// Delimitadores
+terminal SEMICOLON, COMMA, LPAREN, RPAREN, COLON;
+
+// Literales con valores
+terminal Integer INTEGER_LITERAL;
+terminal Double REAL_LITERAL;
+terminal String STRING_LITERAL;
+
+// Identificadores
+terminal String IDENTIFIER;
+
+// Definición de no terminales
+non terminal CompilationUnit, FunctionList, Program, StatementList, Statement, Declaration, DataType, VariableList;
+non terminal InputOutput, Assignment, Expression, ArithmeticExpression, Term, Factor;
+non terminal ConditionalStatement, LoopStatement, SwitchStatement, CaseList, CaseStatement;
+non terminal FunctionDeclaration, RelationalExpression, LogicalExpression;
+
+// Precedencia y asociatividad de operadores
+precedence left OR;
+precedence left AND;
+precedence left EQUAL, NOT_EQUAL;
+precedence left LESS, GREATER, LESS_EQUAL, GREATER_EQUAL;
+precedence left PLUS, MINUS;
+precedence left MULTIPLY, DIVIDE, MODULO;
+precedence right POWER;
+precedence left NOT;
+
+/* Gramática */
+
+// Unidad de compilación (puede tener funciones antes y/o después del programa)
+CompilationUnit ::= FunctionList Program FunctionList;
+CompilationUnit ::= FunctionList Program;
+CompilationUnit ::= Program FunctionList;
+CompilationUnit ::= Program;
+
+// Lista de funciones (puede estar vacía)
+FunctionList ::= FunctionDeclaration;
+FunctionList ::= FunctionDeclaration FunctionList;
+
+
+// Programa principal
+Program ::= PROGRAM IDENTIFIER StatementList ENDPROGRAM;
+Program ::= StatementList;
+
+// Lista de declaraciones/instrucciones
+StatementList ::= Statement;
+StatementList ::= Statement StatementList;
+
+// Tipos de declaraciones/instrucciones
+Statement ::= Declaration;
+Statement ::= Assignment;
+Statement ::= InputOutput;
+Statement ::= ConditionalStatement;
+Statement ::= LoopStatement;
+Statement ::= SwitchStatement;
+//Statement ::= FunctionDeclaration;
+
+// Declaraciones de variables
+Declaration ::= DataType IDENTIFIER VariableList;
+DataType ::= INTEGER_TYPE;
+DataType ::= REAL_TYPE;
+DataType ::= STRING_TYPE;
+DataType ::= BOOLEAN_TYPE;
+DataType ::= CHARACTER_TYPE;
+
+VariableList ::= COMMA IDENTIFIER VariableList;
+VariableList ::= SEMICOLON;
+
+// Entrada y salida
+InputOutput ::= READ IDENTIFIER VariableList;
+InputOutput ::= WRITE IDENTIFIER VariableList;
+InputOutput ::= WRITE STRING_LITERAL VariableList;
+InputOutput ::= WRITE INTEGER_LITERAL VariableList;
+InputOutput ::= PRINT Expression SEMICOLON;
+InputOutput ::= OUTPUT Expression SEMICOLON;
+
+// Asignación
+Assignment ::= IDENTIFIER ASSIGN Expression SEMICOLON;
+
+// Expresiones
+Expression ::= LogicalExpression;
+LogicalExpression ::= LogicalExpression OR RelationalExpression;
+LogicalExpression ::= LogicalExpression AND RelationalExpression;
+LogicalExpression ::= RelationalExpression;
+
+RelationalExpression ::= ArithmeticExpression EQUAL ArithmeticExpression;
+RelationalExpression ::= ArithmeticExpression NOT_EQUAL ArithmeticExpression;
+RelationalExpression ::= ArithmeticExpression LESS ArithmeticExpression;
+RelationalExpression ::= ArithmeticExpression GREATER ArithmeticExpression;
+RelationalExpression ::= ArithmeticExpression LESS_EQUAL ArithmeticExpression;
+RelationalExpression ::= ArithmeticExpression GREATER_EQUAL ArithmeticExpression;
+RelationalExpression ::= ArithmeticExpression;
+
+ArithmeticExpression ::= ArithmeticExpression PLUS Term;
+ArithmeticExpression ::= ArithmeticExpression MINUS Term;
+ArithmeticExpression ::= Term;
+
+Term ::= Term MULTIPLY Term;
+Term ::= Term DIVIDE Term;
+Term ::= Term MODULO Term;
+Term ::= Term POWER Term;
+Term ::= INTEGER_LITERAL;
+Term ::= REAL_LITERAL;
+Term ::= STRING_LITERAL;
+Term ::= IDENTIFIER;
+Term ::= TRUE;
+Term ::= FALSE;
+Term ::= LPAREN Expression RPAREN;
+
+// Condicionales
+ConditionalStatement ::= IF LPAREN Expression RPAREN THEN StatementList ELSE StatementList ENDIF;
+ConditionalStatement ::= IF LPAREN Expression RPAREN THEN StatementList ENDIF;
+
+// Ciclos
+LoopStatement ::= FOR IDENTIFIER ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL StatementList ENDFOR;
+LoopStatement ::= FOR IDENTIFIER ASSIGN INTEGER_LITERAL TO IDENTIFIER StatementList ENDFOR;
+LoopStatement ::= FOR IDENTIFIER ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL STEP INTEGER_LITERAL StatementList ENDFOR;
+LoopStatement ::= WHILE LPAREN Expression RPAREN DO StatementList ENDWHILE;
+
+// Switch
+SwitchStatement ::= SWITCH IDENTIFIER DO CaseList ENDSWITCH;
+CaseList ::= CaseStatement;
+CaseList ::= CaseStatement CaseList;
+
+CaseStatement ::= CASE INTEGER_LITERAL COLON StatementList;
+CaseStatement ::= DEFAULT COLON StatementList;
+CaseStatement ::= OTHERWISE COLON StatementList;
+
+// Funciones
+FunctionDeclaration ::= FUNCTION IDENTIFIER LPAREN RPAREN StatementList ENDFUNCTION;
+FunctionDeclaration ::= FUNCTION IDENTIFIER LPAREN RPAREN StatementList RETURN Expression SEMICOLON ENDFUNCTION;
