@@ -70,12 +70,10 @@ terminal String STRING_LITERAL;
 terminal String IDENTIFIER;
 
 // Definición de no terminales
-non terminal Program, StatementList, Statement, Declaration, DataType, VariableList;
+non terminal CompilationUnit, FunctionList, Program, StatementList, Statement, Declaration, DataType, VariableList;
 non terminal InputOutput, Assignment, Expression, ArithmeticExpression, Term, Factor;
 non terminal ConditionalStatement, LoopStatement, SwitchStatement, CaseList, CaseStatement;
 non terminal FunctionDeclaration, RelationalExpression, LogicalExpression;
-
-// non terminal CompilationUnit, FunctionList;
 
 // Precedencia y asociatividad de operadores
 precedence left OR;
@@ -90,18 +88,14 @@ precedence left NOT;
 /* Gramática */
 
 // Unidad de compilación (puede tener funciones antes y/o después del programa)
-/*
 CompilationUnit ::= FunctionList Program FunctionList;
 CompilationUnit ::= FunctionList Program;
 CompilationUnit ::= Program FunctionList;
 CompilationUnit ::= Program;
-*/
 
-/*
 // Lista de funciones (puede estar vacía)
 FunctionList ::= FunctionDeclaration;
 FunctionList ::= FunctionDeclaration FunctionList;
-*/
 
 // Programa principal
 Program ::= PROGRAM IDENTIFIER StatementList ENDPROGRAM;
@@ -118,7 +112,7 @@ Statement ::= InputOutput;
 Statement ::= ConditionalStatement;
 Statement ::= LoopStatement;
 Statement ::= SwitchStatement;
-Statement ::= FunctionDeclaration;
+//Statement ::= FunctionDeclaration;
 
 // Declaraciones de variables
 Declaration ::= DataType IDENTIFIER VariableList;
