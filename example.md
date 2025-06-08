@@ -95,5 +95,3 @@ EndFunction
 ## 🔄 ¿Cómo usar estos ejemplos?
 
 Estos ejemplos son útiles para probar el analizador léxico y sintáctico. Puedes copiarlos y pegarlos directamente en la entrada de tu aplicación para validar que tu gramática los reconoce correctamente.
-
-¿Quieres ver más ejemplos como `Switch`, `While`, o `Step`? Mira el archivo [extras.md](extras.md) para ejemplos adicionales avanzados.
