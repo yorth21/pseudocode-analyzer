@@ -7,7 +7,7 @@ import java_cup.runtime.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            var path = "src/main/resources/code.yorth";
+            var path = "src/main/resources/code.txt";
             var file = new File(path).getAbsolutePath();
 
             var lexer = new Lexer(new FileReader(file));

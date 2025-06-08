@@ -1,4 +1,4 @@
-# PseudocodeAnalyzer
+# Pseudocode Analyzer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/Java-11+-orange.svg)](https://www.oracle.com/java/)
@@ -38,8 +38,8 @@ A comprehensive lexical and syntactic analyzer for English pseudocode, built wit
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yorth21/PseudocodeAnalyzer.git
-    cd PseudocodeAnalyzer
+    git clone https://github.com/yorth21/pseudocode-analyzer.git
+    cd pseudocode-analyzer
     ```
 
 2. Build the project:
@@ -54,9 +54,9 @@ A comprehensive lexical and syntactic analyzer for English pseudocode, built wit
 
 ### Basic Usage
 
-Create a pseudocode file (`.yorth`) and place it in `src/main/resources/`:
+Create a pseudocode file (`.txt`) and place it in `src/main/resources/`:
 
-By default, the analyzer will process the file named `code.yorth`. You can modify the path in `Main.java` if needed.
+By default, the analyzer will process the file named `code.txt`. You can modify the path in `Main.java` if needed.
 
 The analyzer will output:
 - A "Done" message if parsing was successful
@@ -102,17 +102,9 @@ The analyzer supports a comprehensive set of pseudocode elements:
 
 ## 📋 Examples
 
-Here's a simple example of pseudocode that can be analyzed:
+Here's a simple example of pseudocode that can be analyzed.
 
 ```
-Function calculateSum()
-    Integer a, b, sum;
-    Read a;
-    Read b;
-    sum = a + b;
-    Return sum;
-EndFunction
-
 Program SumCalculator
     Integer result;
     result = calculateSum();
@@ -120,6 +112,8 @@ Program SumCalculator
     Write result;
 EndProgram
 ```
+
+📄 [More examples...](example.md)
 
 ## 📁 Project Structure
 
@@ -156,7 +150,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-- **Yorth Harbin Ortegon Sanchez** - [yorth21](https://github.com/yorth21)
+- **Yorth Ortegon** - [yorth21](https://github.com/yorth21)
 
 ---
 
