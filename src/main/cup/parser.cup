@@ -8,24 +8,15 @@ parser code {:
 
     @Override
     public void syntax_error(Symbol s) {
-        if (s instanceof ComplexSymbolFactory.ComplexSymbol) {
-            ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol) s;
-            errSyntax.append("Error de sintaxis en línea ")
-                .append(cs.getLeft().getLine())
-                .append(", columna ")
-                .append(cs.getLeft().getColumn())
-                .append(": símbolo inesperado '")
-                .append(cs.value)
-                .append("'\n");
-        } else {
-            errSyntax.append("Error de sintaxis (símbolo genérico): tipo ")
-                .append(s.sym)
-                .append(", valor ")
-                .append(s.value)
-                .append("\n");
-        }
+        errSyntax.append("Error de sintaxis en línea ")
+            .append(s.left + 1) // Agregar 1 porque las líneas usualmente se contabilizan desde 1
+            .append(", columna ")
+            .append(s.right + 1) // Agregar 1 por las mismas razones
+            .append(": símbolo inesperado '")
+            .append(s.value != null ? s.value : "null")
+            .append("'.\n");
 
-        throw new UnsupportedOperationException (errSyntax.toString());
+        throw new UnsupportedOperationException(errSyntax.toString());
     }
 :};
 
@@ -79,10 +70,12 @@ terminal String STRING_LITERAL;
 terminal String IDENTIFIER;
 
 // Definición de no terminales
-non terminal CompilationUnit, FunctionList, Program, StatementList, Statement, Declaration, DataType, VariableList;
+non terminal Program, StatementList, Statement, Declaration, DataType, VariableList;
 non terminal InputOutput, Assignment, Expression, ArithmeticExpression, Term, Factor;
 non terminal ConditionalStatement, LoopStatement, SwitchStatement, CaseList, CaseStatement;
 non terminal FunctionDeclaration, RelationalExpression, LogicalExpression;
+
+// non terminal CompilationUnit, FunctionList;
 
 // Precedencia y asociatividad de operadores
 precedence left OR;
@@ -97,15 +90,18 @@ precedence left NOT;
 /* Gramática */
 
 // Unidad de compilación (puede tener funciones antes y/o después del programa)
+/*
 CompilationUnit ::= FunctionList Program FunctionList;
 CompilationUnit ::= FunctionList Program;
 CompilationUnit ::= Program FunctionList;
 CompilationUnit ::= Program;
+*/
 
+/*
 // Lista de funciones (puede estar vacía)
 FunctionList ::= FunctionDeclaration;
 FunctionList ::= FunctionDeclaration FunctionList;
-
+*/
 
 // Programa principal
 Program ::= PROGRAM IDENTIFIER StatementList ENDPROGRAM;
@@ -122,7 +118,7 @@ Statement ::= InputOutput;
 Statement ::= ConditionalStatement;
 Statement ::= LoopStatement;
 Statement ::= SwitchStatement;
-//Statement ::= FunctionDeclaration;
+Statement ::= FunctionDeclaration;
 
 // Declaraciones de variables
 Declaration ::= DataType IDENTIFIER VariableList;

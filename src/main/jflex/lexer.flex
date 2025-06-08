@@ -15,12 +15,12 @@ import java_cup.runtime.*;
 
     private Symbol symbol(String name, int type) {
         tokens.append("Token{ "+ "name = " + name + " , keyword = " + name + " }\n");
-        return new Symbol(type, yyline, yycolumn);
+        return new Symbol(type, yyline, yycolumn, name);
     }
 
     private Symbol symbol(String name, int type, Object value) {
         tokens.append("Token{ "+ "name = " + name + " , keyword = " + value + " }\n");
-        return new Symbol(type, yyline, yycolumn);
+        return new Symbol(type, yyline, yycolumn, value);
     }
 %}
 
