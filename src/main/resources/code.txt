@@ -7,12 +7,12 @@ Program functionTest
         Write "Failed";
     EndIf
 
-    Function funtionExample1 ()
-        Integer a, b, sum;
-        Read a;
-        Read b;
-        sum = a + b;
-        Return sum;
-    EndFunction
 EndProgram
 
+Function funtionExample1 ()
+    Integer a, b, sum;
+    Read a;
+    Read b;
+    sum = a + b;
+    Return sum;
+EndFunction

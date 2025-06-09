@@ -55,16 +55,17 @@
                 <version>3.6.1</version>
                 <executions>
                     <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources</source>
-                            </sources>
-                        </configuration>
+                    <id>add-source</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>add-source</goal>
+                    </goals>
+                    <configuration>
+                        <sources>
+                            <source>target/generated-sources/cup</source>
+                            <source>target/generated-sources/jflex</source>
+                        </sources>
+                    </configuration>
                     </execution>
                 </executions>
             </plugin>
