@@ -24,6 +24,7 @@ parser code {:
 
 // Palabras clave de estructura de programa
 terminal PROGRAM, ENDPROGRAM;
+terminal SUBPROGRAM, ENDSUBPROGRAM;
 
 // Tipos de datos
 terminal INTEGER_TYPE, REAL_TYPE, STRING_TYPE, BOOLEAN_TYPE, CHARACTER_TYPE;
@@ -74,6 +75,7 @@ non terminal CompilationUnit, FunctionList, Program, StatementList, Statement, D
 non terminal InputOutput, Assignment, Expression, ArithmeticExpression, Term, Factor;
 non terminal ConditionalStatement, LoopStatement, SwitchStatement, CaseList, CaseStatement;
 non terminal FunctionDeclaration, RelationalExpression, LogicalExpression;
+non terminal SubProgramDeclaration;
 
 // Precedencia y asociatividad de operadores
 precedence left OR;
@@ -112,7 +114,11 @@ Statement ::= InputOutput;
 Statement ::= ConditionalStatement;
 Statement ::= LoopStatement;
 Statement ::= SwitchStatement;
-//Statement ::= FunctionDeclaration;
+Statement ::= SubProgramDeclaration;
+
+SubProgramDeclaration ::= SUBPROGRAM IDENTIFIER StatementList ENDSUBPROGRAM;
+SubProgramDeclaration ::= SUBPROGRAM IDENTIFIER StatementList RETURN Expression SEMICOLON ENDSUBPROGRAM;
+
 
 // Declaraciones de variables
 Declaration ::= DataType IDENTIFIER VariableList;

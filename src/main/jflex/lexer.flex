@@ -48,6 +48,10 @@ MULTI_LINE_COMMENT = "/*"([^*]|\*+[^*/])*\*+"/"
 "Program"                  { return symbol("Program", sym.PROGRAM); }
 "EndProgram"               { return symbol("EndProgram", sym.ENDPROGRAM); }
 
+/* Sub programa */
+"SubProgram"                  { return symbol("Program", sym.SUBPROGRAM); }
+"EndSubProgram"                  { return symbol("Program", sym.ENDSUBPROGRAM); }
+
 /* Tipos de datos */
 "Integer"                  { return symbol("IntegerType", sym.INTEGER_TYPE); }
 "Real"                     { return symbol("RealType", sym.REAL_TYPE); }
