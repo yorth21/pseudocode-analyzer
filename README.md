@@ -49,7 +49,7 @@ A comprehensive lexical and syntactic analyzer for English pseudocode, built wit
 
 3. Run the analyzer:
     ```bash
-    mvn exec:java -Dexec.mainClass="com.guiller.Main"
+    mvn exec:java -Dexec.mainClass="com.vanesa.Main"
     ```
 
 ### Basic Usage
